@@ -20,7 +20,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/**").permitAll() // ← /auth/login を含んでいる必要あり
+            .requestMatchers("/auth/**").permitAll()
+            .requestMatchers("/api/**").authenticated()
             .anyRequest().authenticated()
         )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
