@@ -1,16 +1,18 @@
 package com.example.muscle_api.controller;
 
-
+import com.example.muscle_api.dto.RecordDto;
 import com.example.muscle_api.entity.Record;
-import com.example.muscle_api.entity.User;
+import com.example.muscle_api.security.CustomUserDetails;
 import com.example.muscle_api.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/records")
+@RequestMapping("/api/records")
 @RequiredArgsConstructor
 public class RecordController {
 
@@ -19,14 +21,17 @@ public class RecordController {
     @PostMapping
     public ResponseEntity<?> addRecord(
             @RequestBody Record record,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        // 認証ユーザーの情報が取得できているか確認
-        if (user == null) {
-            return ResponseEntity.status(401).body("認証が必要です");
-        }
+        Record saved = recordService.saveRecord(record, userDetails.getUser());
+        return ResponseEntity.ok("保存されました: ID = " + saved.getId());
+    }
 
-        Record saved = recordService.saveRecord(record, user);
-        return ResponseEntity.ok(saved);
+    @GetMapping
+    public ResponseEntity<List<RecordDto>> getRecords(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        List<RecordDto> records = recordService.getRecordsByUser(userDetails.getUser());
+        return ResponseEntity.ok(records);
     }
 }
