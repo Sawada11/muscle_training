@@ -41,9 +41,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
-        // 🚨 Flutter WebのURLに合わせて変更！今回は localhost:59446
-        config.setAllowedOrigins(List.of("http://192.168.0.64:59886"));
+        config.setAllowedOrigins(List.of("http://localhost:8081", "http://127.0.0.1:8081")); // ✅ ここを修正
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
@@ -52,4 +50,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }

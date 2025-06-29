@@ -7,7 +7,7 @@ class ApiClient {
     final token = prefs.getString('jwt_token');
 
     return Dio(BaseOptions(
-      baseUrl: 'http://192.168.0.64:8080',
+      baseUrl: 'http://localhost:8080',
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

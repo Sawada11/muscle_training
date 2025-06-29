@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../utils/token_storage.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:8080';
+  static const String baseUrl = 'http://192.168.0.64:8080';
 
   static Future<bool> login(String email, String password) async {
     final response = await http.post(

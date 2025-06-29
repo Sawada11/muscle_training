@@ -7,7 +7,7 @@ class AuthService {
 
     try {
       final response = await dio.post(
-        'http://localhost:8080/auth/login',
+        'http://192.168.0.64:8080/auth/login',
         data: {
           'email': email,
           'password': password,

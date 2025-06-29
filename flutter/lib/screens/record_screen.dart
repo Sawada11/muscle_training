@@ -20,7 +20,7 @@ class _RecordScreenState extends State<RecordScreen> {
   final _repsController = TextEditingController();
   final _setsController = TextEditingController();
 
-  int? _editingId; // 編集中の記録ID（nullなら新規）
+  int? _editingId;
 
   @override
   void initState() {
@@ -104,9 +104,12 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   Future<void> _logout() async {
-    await TokenStorage.removeToken();
+    await TokenStorage().clearToken(); // ✅ 修正済み（インスタンス経由で呼び出し）
     if (context.mounted) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
     }
   }
 
