@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -16,6 +17,23 @@ import java.util.Optional;
 public class RecordController {
 
     private final RecordService recordService;
+
+    // 🔹 POST: 記録を追加 ← ✅ 追加
+    @PostMapping
+    public ResponseEntity<?> createRecord(
+            @RequestBody Record record,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Record saved = recordService.saveRecord(record, userDetails.getUser());
+        return ResponseEntity.ok(saved);
+    }
+
+    // 🔹 GET: 全記録（ログインユーザー）
+    @GetMapping
+    public ResponseEntity<List<Record>> getRecords(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<Record> records = recordService.findAllByUser(userDetails.getUser());
+        return ResponseEntity.ok(records);
+    }
 
     // 🔹 GET: 単一の記録を取得
     @GetMapping("/{id}")

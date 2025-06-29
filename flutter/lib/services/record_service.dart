@@ -3,11 +3,11 @@ import 'package:muscle_training/models/record.dart';
 import 'package:muscle_training/utils/api_client.dart';
 
 class RecordService {
-  // 記録一覧を取得
+  // 🔹 記録一覧を取得
   static Future<List<Record>> fetchRecords() async {
     try {
       final dio = await ApiClient.getDio();
-      final response = await dio.get('/records');
+      final response = await dio.get('/api/records'); // ✅ 修正済み
       final data = response.data as List;
       return data.map((json) => Record.fromJson(json)).toList();
     } catch (e) {
@@ -16,7 +16,7 @@ class RecordService {
     }
   }
 
-  // 記録を追加
+  // 🔹 記録を追加
   static Future<bool> addRecord({
     required String exercise,
     required int weight,
@@ -25,7 +25,7 @@ class RecordService {
   }) async {
     try {
       final dio = await ApiClient.getDio();
-      final response = await dio.post('/records', data: {
+      final response = await dio.post('/api/records', data: { // ✅ 修正済み
         'date': DateTime.now().toIso8601String().split('T')[0],
         'exercise': exercise,
         'weight': weight,
@@ -40,7 +40,7 @@ class RecordService {
     }
   }
 
-  // 記録を更新
+  // 🔹 記録を更新
   static Future<bool> updateRecord({
     required int id,
     required String exercise,
@@ -50,7 +50,7 @@ class RecordService {
   }) async {
     try {
       final dio = await ApiClient.getDio();
-      final response = await dio.put('/records/$id', data: {
+      final response = await dio.put('/api/records/$id', data: {
         'exercise': exercise,
         'weight': weight,
         'reps': reps,
@@ -64,11 +64,11 @@ class RecordService {
     }
   }
 
-  // 記録を削除
+  // 🔹 記録を削除
   static Future<bool> deleteRecord(int id) async {
     try {
       final dio = await ApiClient.getDio();
-      final response = await dio.delete('/records/$id');
+      final response = await dio.delete('/api/records/$id'); // ✅ 修正済み
       print('🗑 記録削除成功: ${response.data}');
       return true;
     } catch (e) {

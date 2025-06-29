@@ -38,29 +38,42 @@ public class RecordService {
         return streak;
     }
 
-    // ✅ 追加：本人の記録を1件取得
     public Optional<Record> findByIdAndUser(Long id, User user) {
         return recordRepository.findByIdAndUser(id, user);
     }
 
-    // ✅ 追加：記録の更新
     public Optional<Record> updateRecord(Long id, Record updatedRecord, User user) {
-        return recordRepository.findByIdAndUser(id, user).map(record -> {
-            record.setDate(updatedRecord.getDate());
-            record.setExercise(updatedRecord.getExercise());
-            record.setWeight(updatedRecord.getWeight());
-            record.setReps(updatedRecord.getReps());
-            record.setSets(updatedRecord.getSets());
-            record.setMemo(updatedRecord.getMemo());
-            return recordRepository.save(record);
+        return recordRepository.findByIdAndUser(id, user).map(originalRecord -> {
+
+            // ✅ null チェックを追加（Flutter 側が null を送る可能性に備える）
+            if (updatedRecord.getDate() == null) {
+                updatedRecord.setDate(originalRecord.getDate());
+            }
+
+            originalRecord.setDate(updatedRecord.getDate());
+            originalRecord.setExercise(updatedRecord.getExercise());
+            originalRecord.setWeight(updatedRecord.getWeight());
+            originalRecord.setReps(updatedRecord.getReps());
+            originalRecord.setSets(updatedRecord.getSets());
+            originalRecord.setMemo(updatedRecord.getMemo());
+
+            return recordRepository.save(originalRecord);
         });
     }
 
-    // ✅ 追加：記録の削除
     public boolean deleteRecord(Long id, User user) {
         return recordRepository.findByIdAndUser(id, user).map(record -> {
             recordRepository.delete(record);
             return true;
         }).orElse(false);
+    }
+
+    public List<Record> findAllByUser(User user) {
+        return recordRepository.findByUser(user);
+    }
+
+    public Record saveRecord(Record record, User user) {
+        record.setUser(user);
+        return recordRepository.save(record);
     }
 }
