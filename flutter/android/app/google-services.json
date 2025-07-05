@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "158246827935",
+    "project_id": "muscle-app-94fa2",
+    "storage_bucket": "muscle-app-94fa2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158246827935:android:10ca7fca7cb985e9f42faa",
+        "android_client_info": {
+          "package_name": "com.example.muscle_training"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVjdSyr8TWuSk0WDypu8CDokNMGz8XZ6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

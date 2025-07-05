@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/record.dart';
 import '../services/record_service.dart';
+import '../services/fcm_service.dart'; 
 import '../utils/token_storage.dart';
 import 'login_screen.dart';
 
@@ -26,6 +27,11 @@ class _RecordScreenState extends State<RecordScreen> {
   void initState() {
     super.initState();
     _loadRecords();
+
+    // ✅ FCMトークン送信処理を追加
+    Future.microtask(() async {
+      await FcmService.sendTokenToServer();
+    });
   }
 
   void _loadRecords() {
@@ -104,7 +110,7 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   Future<void> _logout() async {
-    await TokenStorage().clearToken(); // ✅ 修正済み（インスタンス経由で呼び出し）
+    await TokenStorage.clearToken(); // ✅ 修正点：static メソッドで呼び出し
     if (context.mounted) {
       Navigator.pushReplacement(
         context,

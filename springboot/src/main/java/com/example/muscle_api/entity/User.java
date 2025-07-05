@@ -26,48 +26,27 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false)
-    private String password; // BCrypt化して保存
+    private String password;
 
     @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore // 🔴 これを追加してシリアライズ時に records を無視
+    @JsonIgnore
     private List<Record> records;
+
+    // ✅ 追加：FCMトークン
+    @Column(name = "fcm_token")
+    private String fcmToken;
 
     @Builder.Default
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // --- ↓↓↓ UserDetailsの実装 ↓↓↓ ---
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(); // 権限が不要な場合
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email; // email をログインIDとして使用
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @Override public Collection<? extends GrantedAuthority> getAuthorities() { return List.of(); }
+    @Override public String getUsername() { return this.email; }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }
